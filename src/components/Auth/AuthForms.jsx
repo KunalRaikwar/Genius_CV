@@ -209,7 +209,7 @@ export function Signup() {
           to_name: name,
           to_email: email,
           subject: 'Your GeniusCV Verification Code',
-          message: `Hi ${name},\n\nYour email verification code is: ${otp}\n\nThis code will expire in 60 seconds. Please do not share this code with anyone.\n\nBest regards,\nGeniusCV Team`
+          message: `Your email verification code is: ${otp}\n\nThis code will expire in 60 seconds. Please do not share this code with anyone.\n\nBest regards,\nGeniusCV Team`
         }, publicKey);
         console.log('✅ OTP Email sent successfully!', response.status, response.text);
       } else {
@@ -247,7 +247,7 @@ export function Signup() {
           to_name: name,
           to_email: email,
           subject: 'Your GeniusCV Verification Code (Resent)',
-          message: `Hi ${name},\n\nYour new verification code is: ${otp}\n\nThis code will expire in 60 seconds.\n\nBest regards,\nGeniusCV Team`
+          message: `Your new verification code is: ${otp}\n\nThis code will expire in 60 seconds.\n\nBest regards,\nGeniusCV Team`
         }, publicKey);
         console.log('✅ Resend email sent!');
       }
