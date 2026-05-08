@@ -54,7 +54,7 @@ export default function LandingPage() {
           Input your details in plain English. Our advanced AI crafts ATS-optimized resumes and generates breathtaking 3D portfolios instantly.
         </motion.p>
         
-        <motion.div variants={itemVariants} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <motion.div variants={itemVariants} className="hero-buttons" style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
           <Link to="/build" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1.125rem' }}>
             Start Building Free <ArrowRight size={20} />
           </Link>
@@ -68,6 +68,7 @@ export default function LandingPage() {
           
           {/* Left Template - Creative Resume */}
           <motion.div 
+            className="hide-on-mobile"
             animate={{ y: [0, -15, 0], rotateZ: [-12, -12, -12], transition: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 } }}
             style={{ position: 'absolute', width: '250px', height: '350px', left: 'calc(50% - 280px)', top: '40px', padding: 0, overflow: 'hidden', display: 'flex', background: '#fff', borderRadius: '4px', boxShadow: '-10px 20px 40px rgba(0,0,0,0.3)', border: '1px solid #eaeaea', zIndex: 1 }}
           >
@@ -105,6 +106,7 @@ export default function LandingPage() {
           
           {/* Right Template - Professional Resume */}
           <motion.div 
+            className="hide-on-mobile"
             animate={{ y: [0, -15, 0], rotateZ: [12, 12, 12], transition: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 } }}
             style={{ position: 'absolute', width: '250px', height: '350px', right: 'calc(50% - 280px)', top: '40px', padding: '1.5rem', background: '#fff', borderRadius: '4px', boxShadow: '10px 20px 40px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid #eaeaea', zIndex: 1 }}
           >
@@ -137,7 +139,7 @@ export default function LandingPage() {
           {/* Center Hero Template - Modern Executive */}
           <motion.div 
             animate={{ y: [0, -20, 0], transition: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
-            style={{ position: 'absolute', width: '320px', height: '420px', zIndex: 10, padding: '2rem 1.5rem', border: '1px solid #f0f0f0', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', borderRadius: '6px', background: '#ffffff' }}
+            style={{ position: 'absolute', width: '320px', maxWidth: '90vw', height: '420px', zIndex: 10, padding: '2rem 1.5rem', border: '1px solid #f0f0f0', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', borderRadius: '6px', background: '#ffffff' }}
           >
              {/* Header */}
              <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '2px solid #00F0FF', paddingBottom: '1rem' }}>

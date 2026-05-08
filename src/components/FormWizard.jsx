@@ -58,10 +58,10 @@ export default function FormWizard() {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentStep}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+              initial={{ opacity: 0, x: 30, filter: 'blur(5px)' }}
+              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, x: -30, filter: 'blur(5px)' }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
             >
               {currentStep === 0 && <PersonalStep />}
               {currentStep === 1 && <EducationStep />}

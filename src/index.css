@@ -186,6 +186,26 @@ button {
   text-transform: uppercase;
 }
 
+.input, textarea, select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.15), inset 0 0 5px rgba(0, 240, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+}
+
 .input-field {
   width: 100%;
   padding: 0.875rem 1.25rem;
@@ -657,5 +677,86 @@ textarea.input-field {
     box-shadow: none;
     margin: 0;
     padding: 0;
+  }
+}
+
+/* ==========================================================================
+   Mobile Responsiveness
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .container {
+    width: 95%;
+  }
+  .heading-xl {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 0 1rem;
+  }
+  
+  .grid-cols-2 {
+    grid-template-columns: 1fr; /* Stack columns on mobile */
+  }
+
+  .heading-xl {
+    font-size: clamp(2rem, 8vw, 3rem);
+    line-height: 1.2;
+  }
+  
+  .text-lead {
+    font-size: 1rem;
+  }
+
+  .flex-center {
+    flex-direction: column; /* Often flex-center needs to stack on very small screens, though be careful if it's used for inline elements */
+  }
+  
+  /* Helper class to hide non-essential background elements on mobile */
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .wizard-container {
+    padding: 1.5rem !important;
+    margin: 1rem !important;
+  }
+  
+  .step-indicator {
+    display: none; /* Hide complex step indicators on tiny screens, or make them smaller */
+  }
+
+  /* Portfolio Mobile Fixes */
+  .portfolio-container .grid-cols-2,
+  .portfolio-container .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .portfolio-container h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .resume-pdf-container {
+    width: 100%;
+    padding: 10px;
+    /* Allow zooming out or scaling on tiny mobile if rendering in app */
+    transform: scale(0.8);
+    transform-origin: top center;
   }
 }
