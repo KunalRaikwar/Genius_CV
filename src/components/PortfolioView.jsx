@@ -59,7 +59,7 @@ export default function PortfolioView() {
             <span className="text-secondary" style={{ fontSize: '0.875rem' }}>Available for work</span>
           </motion.div>
           
-          <motion.h1 variants={itemVariants} style={{ fontSize: 'clamp(3.5rem, 8vw, 6.5rem)', lineHeight: 1.05, marginBottom: '1.5rem', fontWeight: 800, letterSpacing: '-0.04em' }}>
+          <motion.h1 variants={itemVariants} style={{ fontSize: 'clamp(2rem, 8vw, 6.5rem)', lineHeight: 1.05, marginBottom: '1.5rem', fontWeight: 800, letterSpacing: '-0.04em' }}>
             I'm <span className="text-gradient">{personal.fullName || 'Awesome'}</span>
           </motion.h1>
           
