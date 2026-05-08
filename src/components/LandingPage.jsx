@@ -63,42 +63,130 @@ export default function LandingPage() {
           </Link>
         </motion.div>
 
-        {/* Floating Mockup Preview Elements */}
-        <motion.div variants={itemVariants} style={{ marginTop: '5rem', position: 'relative', width: '100%', height: '200px', display: 'flex', justifyContent: 'center', perspective: '1000px' }}>
+        {/* Floating Mockup Preview Elements - ResumeBuild Style */}
+        <motion.div variants={itemVariants} style={{ marginTop: '4rem', position: 'relative', width: '100%', height: '450px', display: 'flex', justifyContent: 'center', perspective: '1200px' }}>
+          
+          {/* Left Template - Creative Resume */}
           <motion.div 
-            animate={floatAnimation}
-            className="glass-card" 
-            style={{ position: 'absolute', width: '300px', height: '180px', left: 'calc(50% - 350px)', transform: 'rotateY(15deg) rotateX(5deg)', padding: '1.5rem', opacity: 0.8 }}
+            animate={{ y: [0, -15, 0], rotateZ: [-12, -12, -12], transition: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 } }}
+            style={{ position: 'absolute', width: '250px', height: '350px', left: 'calc(50% - 280px)', top: '40px', padding: 0, overflow: 'hidden', display: 'flex', background: '#fff', borderRadius: '4px', boxShadow: '-10px 20px 40px rgba(0,0,0,0.3)', border: '1px solid #eaeaea', zIndex: 1 }}
           >
-            <div style={{ width: '40%', height: '12px', background: 'var(--text-secondary)', borderRadius: '4px', marginBottom: '1rem' }} />
-            <div style={{ width: '80%', height: '8px', background: 'var(--border-color)', borderRadius: '4px', marginBottom: '0.5rem' }} />
-            <div style={{ width: '60%', height: '8px', background: 'var(--border-color)', borderRadius: '4px' }} />
+            {/* Sidebar */}
+            <div style={{ width: '35%', height: '100%', background: '#2B3A55', padding: '1.2rem 0.8rem' }}>
+              <div style={{ width: '45px', height: '45px', borderRadius: '50%', background: '#fff', margin: '0 auto 1rem', opacity: 0.9 }} />
+              <div style={{ width: '80%', height: '4px', background: 'rgba(255,255,255,0.7)', margin: '0 auto 0.5rem', borderRadius: '2px' }} />
+              <div style={{ width: '60%', height: '4px', background: 'rgba(255,255,255,0.5)', margin: '0 auto 1.5rem', borderRadius: '2px' }} />
+              
+              <div style={{ width: '100%', height: '3px', background: '#E8C4A2', marginBottom: '0.8rem', borderRadius: '2px' }} />
+              <div style={{ width: '80%', height: '3px', background: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem', borderRadius: '2px' }} />
+              <div style={{ width: '90%', height: '3px', background: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem', borderRadius: '2px' }} />
+              <div style={{ width: '60%', height: '3px', background: 'rgba(255,255,255,0.3)', marginBottom: '1.5rem', borderRadius: '2px' }} />
+
+              <div style={{ width: '100%', height: '3px', background: '#E8C4A2', marginBottom: '0.8rem', borderRadius: '2px' }} />
+              <div style={{ width: '90%', height: '3px', background: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem', borderRadius: '2px' }} />
+              <div style={{ width: '70%', height: '3px', background: 'rgba(255,255,255,0.3)', marginBottom: '0.5rem', borderRadius: '2px' }} />
+            </div>
+            {/* Main Content */}
+            <div style={{ width: '65%', height: '100%', padding: '1.2rem', background: '#fff' }}>
+              <div style={{ width: '50%', height: '8px', background: '#2B3A55', marginBottom: '0.5rem', borderRadius: '4px' }} />
+              <div style={{ width: '80%', height: '4px', background: '#9CA3AF', marginBottom: '1.5rem', borderRadius: '2px' }} />
+              
+              <div style={{ width: '40%', height: '6px', background: '#4B5563', marginBottom: '0.8rem', borderRadius: '3px' }} />
+              <div style={{ width: '100%', height: '3px', background: '#D1D5DB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+              <div style={{ width: '90%', height: '3px', background: '#D1D5DB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+              <div style={{ width: '95%', height: '3px', background: '#D1D5DB', marginBottom: '1.2rem', borderRadius: '2px' }} />
+
+              <div style={{ width: '40%', height: '6px', background: '#4B5563', marginBottom: '0.8rem', borderRadius: '3px' }} />
+              <div style={{ width: '100%', height: '3px', background: '#D1D5DB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+              <div style={{ width: '85%', height: '3px', background: '#D1D5DB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+              <div style={{ width: '90%', height: '3px', background: '#D1D5DB', marginBottom: '1.2rem', borderRadius: '2px' }} />
+            </div>
           </motion.div>
           
+          {/* Right Template - Professional Resume */}
           <motion.div 
-            animate={{ y: [0, -20, 0], transition: { duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 } }}
-            className="glass-card" 
-            style={{ position: 'absolute', width: '350px', height: '220px', zIndex: 10, padding: '2rem', border: '1px solid rgba(0, 240, 255, 0.4)', boxShadow: '0 20px 50px rgba(0,0,0,0.8)' }}
+            animate={{ y: [0, -15, 0], rotateZ: [12, 12, 12], transition: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1 } }}
+            style={{ position: 'absolute', width: '250px', height: '350px', right: 'calc(50% - 280px)', top: '40px', padding: '1.5rem', background: '#fff', borderRadius: '4px', boxShadow: '10px 20px 40px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid #eaeaea', zIndex: 1 }}
           >
-             <div className="flex-between" style={{ marginBottom: '1.5rem' }}>
-                <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--accent-gradient)' }} />
-                <div style={{ width: '60px', height: '12px', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }} />
-             </div>
-             <div style={{ width: '100%', height: '20px', background: 'var(--text-primary)', borderRadius: '4px', marginBottom: '0.5rem', opacity: 0.9 }} />
-             <div style={{ width: '70%', height: '12px', background: 'var(--text-secondary)', borderRadius: '4px' }} />
+            <div style={{ width: '60%', height: '10px', background: '#111827', marginBottom: '0.5rem', borderRadius: '5px' }} />
+            <div style={{ width: '80%', height: '4px', background: '#6B7280', marginBottom: '1rem', borderRadius: '2px' }} />
+            <div style={{ width: '100%', height: '2px', background: '#E5E7EB', marginBottom: '1.2rem' }} />
+            
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '0.5rem' }}>
+              <div style={{ width: '35%', height: '6px', background: '#2563EB', borderRadius: '3px' }} />
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+              <div style={{ width: '45%', height: '4px', background: '#374151', borderRadius: '2px' }} />
+              <div style={{ width: '25%', height: '4px', background: '#9CA3AF', borderRadius: '2px' }} />
+            </div>
+            <div style={{ width: '100%', height: '3px', background: '#E5E7EB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+            <div style={{ width: '90%', height: '3px', background: '#E5E7EB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+            <div style={{ width: '95%', height: '3px', background: '#E5E7EB', marginBottom: '1.2rem', borderRadius: '2px' }} />
+
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start', marginBottom: '0.5rem' }}>
+              <div style={{ width: '35%', height: '6px', background: '#2563EB', borderRadius: '3px' }} />
+            </div>
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+              <div style={{ width: '45%', height: '4px', background: '#374151', borderRadius: '2px' }} />
+              <div style={{ width: '25%', height: '4px', background: '#9CA3AF', borderRadius: '2px' }} />
+            </div>
+            <div style={{ width: '100%', height: '3px', background: '#E5E7EB', marginBottom: '0.3rem', borderRadius: '2px' }} />
+            <div style={{ width: '85%', height: '3px', background: '#E5E7EB', marginBottom: '1.2rem', borderRadius: '2px' }} />
           </motion.div>
 
+          {/* Center Hero Template - Modern Executive */}
           <motion.div 
-            animate={floatAnimation}
-            className="glass-card" 
-            style={{ position: 'absolute', width: '300px', height: '180px', right: 'calc(50% - 350px)', transform: 'rotateY(-15deg) rotateX(5deg)', padding: '1.5rem', opacity: 0.8 }}
+            animate={{ y: [0, -20, 0], transition: { duration: 5, repeat: Infinity, ease: "easeInOut" } }}
+            style={{ position: 'absolute', width: '320px', height: '420px', zIndex: 10, padding: '2rem 1.5rem', border: '1px solid #f0f0f0', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', display: 'flex', flexDirection: 'column', borderRadius: '6px', background: '#ffffff' }}
           >
-            <div className="grid-cols-2" style={{ gap: '0.5rem' }}>
-              <div style={{ height: '60px', background: 'var(--border-color)', borderRadius: '8px' }} />
-              <div style={{ height: '60px', background: 'var(--border-color)', borderRadius: '8px' }} />
-              <div style={{ height: '60px', background: 'var(--border-color)', borderRadius: '8px' }} />
-              <div style={{ height: '60px', background: 'var(--border-color)', borderRadius: '8px' }} />
-            </div>
+             {/* Header */}
+             <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', borderBottom: '2px solid #00F0FF', paddingBottom: '1rem' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '4px', background: '#F3F4F6' }} />
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                   <div style={{ width: '70%', height: '14px', background: '#111827', borderRadius: '4px', marginBottom: '0.5rem' }} />
+                   <div style={{ width: '40%', height: '6px', background: '#00F0FF', borderRadius: '3px', marginBottom: '0.3rem' }} />
+                   <div style={{ width: '90%', height: '4px', background: '#9CA3AF', borderRadius: '2px' }} />
+                </div>
+             </div>
+             
+             {/* Body */}
+             <div style={{ display: 'flex', gap: '1.5rem', flex: 1 }}>
+               {/* Left Col */}
+               <div style={{ width: '35%', borderRight: '1px solid #E5E7EB', paddingRight: '1rem' }}>
+                 <div style={{ width: '100%', height: '6px', background: '#4B5563', marginBottom: '0.8rem', borderRadius: '3px' }} />
+                 <div style={{ width: '100%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '80%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '90%', height: '4px', background: '#E5E7EB', marginBottom: '1.5rem', borderRadius: '2px' }} />
+
+                 <div style={{ width: '100%', height: '6px', background: '#4B5563', marginBottom: '0.8rem', borderRadius: '3px' }} />
+                 {/* Progress bars */}
+                 <div style={{ width: '100%', background: '#F3F4F6', height: '4px', borderRadius: '2px', marginBottom: '0.8rem' }}><div style={{ width: '90%', background: '#00F0FF', height: '100%', borderRadius: '2px' }}/></div>
+                 <div style={{ width: '100%', background: '#F3F4F6', height: '4px', borderRadius: '2px', marginBottom: '0.8rem' }}><div style={{ width: '75%', background: '#00F0FF', height: '100%', borderRadius: '2px' }}/></div>
+                 <div style={{ width: '100%', background: '#F3F4F6', height: '4px', borderRadius: '2px', marginBottom: '0.8rem' }}><div style={{ width: '85%', background: '#00F0FF', height: '100%', borderRadius: '2px' }}/></div>
+                 <div style={{ width: '100%', background: '#F3F4F6', height: '4px', borderRadius: '2px', marginBottom: '1.5rem' }}><div style={{ width: '60%', background: '#00F0FF', height: '100%', borderRadius: '2px' }}/></div>
+               </div>
+               
+               {/* Right Col */}
+               <div style={{ width: '65%' }}>
+                 <div style={{ width: '40%', height: '8px', background: '#111827', marginBottom: '1rem', borderRadius: '4px' }} />
+                 
+                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                    <div style={{ width: '50%', height: '6px', background: '#4B5563', borderRadius: '3px' }} />
+                    <div style={{ width: '25%', height: '4px', background: '#00F0FF', borderRadius: '2px' }} />
+                 </div>
+                 <div style={{ width: '100%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '90%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '95%', height: '4px', background: '#E5E7EB', marginBottom: '1.5rem', borderRadius: '2px' }} />
+
+                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                    <div style={{ width: '50%', height: '6px', background: '#4B5563', borderRadius: '3px' }} />
+                    <div style={{ width: '25%', height: '4px', background: '#00F0FF', borderRadius: '2px' }} />
+                 </div>
+                 <div style={{ width: '100%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '85%', height: '4px', background: '#E5E7EB', marginBottom: '0.4rem', borderRadius: '2px' }} />
+                 <div style={{ width: '90%', height: '4px', background: '#E5E7EB', marginBottom: '1.5rem', borderRadius: '2px' }} />
+               </div>
+             </div>
           </motion.div>
         </motion.div>
       </motion.div>

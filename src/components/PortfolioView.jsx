@@ -3,6 +3,8 @@ import { useResume } from '../context/ResumeContext';
 import { Link } from 'react-router-dom';
 import { Download, ExternalLink, Briefcase, GraduationCap, Code2, User } from 'lucide-react';
 
+import CustomCursor from './portfolio-sections/CustomCursor';
+
 export default function PortfolioView() {
   const { data } = useResume();
   const { personal, experience, projects, skills, education } = data;
@@ -23,7 +25,8 @@ export default function PortfolioView() {
   };
 
   return (
-    <div style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
+    <div className="portfolio-container" style={{ position: 'relative', zIndex: 1, background: 'var(--bg-primary)' }}>
+      <CustomCursor />
       {/* Dynamic Background */}
       <div style={{ position: 'fixed', top: '0', left: '0', width: '100vw', height: '100vh', background: 'radial-gradient(circle at 80% 20%, rgba(112, 0, 255, 0.08), transparent 40%), radial-gradient(circle at 20% 80%, rgba(0, 240, 255, 0.05), transparent 40%)', zIndex: -1 }} />
 

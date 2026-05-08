@@ -95,6 +95,25 @@ export default function MinimalTemplate({ data }) {
         </div>
       )}
 
+      {/* Certifications & Awards */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div>
+          <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Awards & Certifications</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {data.certifications.map(cert => (
+              <div key={cert.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                  <strong style={{ fontSize: '0.95rem' }}>{cert.title}</strong>
+                  {cert.year && <span style={{ fontSize: '0.875rem', color: '#555' }}>{cert.year}</span>}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#333' }}>{cert.issuer}</div>
+                {cert.description && <div style={{ fontSize: '0.875rem', color: '#555', fontStyle: 'italic', marginTop: '2px' }}>{cert.description}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

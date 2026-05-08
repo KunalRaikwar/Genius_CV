@@ -7,7 +7,7 @@ import { useResume } from '../context/ResumeContext';
 export default function FormWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
-  const steps = ['Personal', 'Education', 'Experience', 'Skills', 'Projects'];
+  const steps = ['Personal', 'Education', 'Experience', 'Skills', 'Projects', 'Awards'];
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -68,6 +68,7 @@ export default function FormWizard() {
               {currentStep === 2 && <ExperienceStep />}
               {currentStep === 3 && <SkillsStep />}
               {currentStep === 4 && <ProjectsStep />}
+              {currentStep === 5 && <CertificationsStep />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -136,8 +137,8 @@ function PersonalStep() {
 
   // Validation logic
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  // Indian phone: Optional +91, then starting with 6-9 followed by 9 digits.
-  const phoneRegex = /^(\+91[\-\s]?)?[6-9]\d{9}$/;
+  // Generic phone validation: allows +, -, spaces, and 7-20 characters
+  const phoneRegex = /^\+?[0-9\s\-]{7,20}$/;
 
   const isEmailInvalid = personal.email && !emailRegex.test(personal.email);
   const isPhoneInvalid = personal.phone && !phoneRegex.test(personal.phone);
@@ -156,6 +157,34 @@ function PersonalStep() {
       reader.readAsDataURL(file);
     }
   };
+
+  const getPhoneParts = (phoneStr) => {
+    if (!phoneStr) return { code: '+91', number: '' };
+    const parts = phoneStr.trim().split(' ');
+    if (parts.length > 1 && parts[0].startsWith('+')) {
+      return { code: parts[0], number: parts.slice(1).join(' ') };
+    }
+    if (phoneStr.startsWith('+')) {
+      const match = phoneStr.match(/^(\+\d{1,4})(.*)$/);
+      if (match) return { code: match[1], number: match[2].trim() };
+    }
+    return { code: '+91', number: phoneStr };
+  };
+
+  const getPhonePlaceholder = (code) => {
+    switch (code) {
+      case '+1': return '234 567 8900';
+      case '+44': return '7911 123456';
+      case '+61': return '412 345 678';
+      case '+971': return '50 123 4567';
+      case '+65': return '8123 4567';
+      case '+49': return '151 23456789';
+      case '+91':
+      default: return '98765 43210';
+    }
+  };
+
+  const { code: currentPhoneCode, number: currentPhoneNumber } = getPhoneParts(personal.phone);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -182,7 +211,7 @@ function PersonalStep() {
         </div>
         <div className="input-group">
           <label className="input-label">Professional Title</label>
-          <input className="input-field" value={personal.jobTitle} onChange={e => updatePersonal('jobTitle', e.target.value)} placeholder="e.g. Senior Software Engineer" />
+          <input className="input-field" value={personal.jobTitle} onChange={e => updatePersonal('jobTitle', e.target.value)} placeholder="e.g. Senior Software Engineer / Fresher" />
         </div>
         <div className="input-group">
           <label className="input-label">Email Address</label>
@@ -196,33 +225,53 @@ function PersonalStep() {
           {isEmailInvalid && <span style={{ color: 'var(--accent-tertiary)', fontSize: '0.75rem', marginTop: '-0.25rem' }}>Please enter a valid email.</span>}
         </div>
         <div className="input-group">
-          <label className="input-label">Phone Number (Indian)</label>
-          <input 
-            className="input-field" 
-            style={{ borderColor: isPhoneInvalid ? 'var(--accent-tertiary)' : undefined }}
-            value={personal.phone} 
-            onChange={e => updatePersonal('phone', e.target.value)} 
-            placeholder="e.g. +91 9876543210" 
-          />
-          {isPhoneInvalid && <span style={{ color: 'var(--accent-tertiary)', fontSize: '0.75rem', marginTop: '-0.25rem' }}>Please enter a valid Indian phone number.</span>}
+          <label className="input-label">Phone Number</label>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <select 
+              className="input-field" 
+              style={{ width: '120px', padding: '0.75rem 0.5rem', appearance: 'none', background: 'var(--bg-secondary)', cursor: 'pointer' }}
+              value={currentPhoneCode}
+              onChange={e => updatePersonal('phone', `${e.target.value} ${currentPhoneNumber}`.trim())}
+            >
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+61">🇦🇺 +61</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+65">🇸🇬 +65</option>
+              <option value="+49">🇩🇪 +49</option>
+            </select>
+            <input 
+              className="input-field" 
+              style={{ flex: 1, borderColor: isPhoneInvalid ? 'var(--accent-tertiary)' : undefined }}
+              value={currentPhoneNumber} 
+              onChange={e => {
+                // Prevent typing letters, only numbers, spaces, and hyphens
+                const val = e.target.value.replace(/[^\d\s-]/g, '');
+                updatePersonal('phone', `${currentPhoneCode} ${val}`.trim());
+              }} 
+              placeholder={`e.g. ${getPhonePlaceholder(currentPhoneCode)}`} 
+            />
+          </div>
+          {isPhoneInvalid && <span style={{ color: 'var(--accent-tertiary)', fontSize: '0.75rem', marginTop: '-0.25rem' }}>Please enter a valid phone number.</span>}
         </div>
       </div>
       <div className="grid-cols-2">
         <div className="input-group">
-          <label className="input-label">Location (City, Country)</label>
+          <label className="input-label">Location</label>
           <input className="input-field" value={personal.location} onChange={e => updatePersonal('location', e.target.value)} placeholder="e.g. Mumbai, India" />
         </div>
         <div className="input-group">
           <label className="input-label">Personal Website (Optional)</label>
-          <input className="input-field" value={personal.website} onChange={e => updatePersonal('website', e.target.value)} placeholder="e.g. kunalraikwar.com" />
+          <input className="input-field" value={personal.website} onChange={e => updatePersonal('website', e.target.value)} placeholder="e.g. yourwebsite.com" />
         </div>
         <div className="input-group">
           <label className="input-label">LinkedIn Profile URL</label>
-          <input className="input-field" value={personal.linkedin} onChange={e => updatePersonal('linkedin', e.target.value)} placeholder="e.g. linkedin.com/in/kunalraikwar" />
+          <input className="input-field" value={personal.linkedin} onChange={e => updatePersonal('linkedin', e.target.value)} placeholder="e.g. linkedin.com/in/username" />
         </div>
         <div className="input-group">
           <label className="input-label">GitHub Profile URL</label>
-          <input className="input-field" value={personal.github} onChange={e => updatePersonal('github', e.target.value)} placeholder="e.g. github.com/kunalraikwar" />
+          <input className="input-field" value={personal.github} onChange={e => updatePersonal('github', e.target.value)} placeholder="e.g. github.com/username" />
         </div>
       </div>
       <div className="input-group">
@@ -460,6 +509,67 @@ function ProjectsStep() {
         ))}
       </AnimatePresence>
       <button className="btn btn-secondary" onClick={handleAdd} style={{ width: '100%', borderStyle: 'dashed' }}><Plus size={18} /> Add Notable Project</button>
+    </div>
+  );
+}
+
+function CertificationsStep() {
+  const { data, addItem, updateItem, removeItem } = useResume();
+  
+  const handleAdd = () => {
+    addItem('certifications', { title: '', issuer: '', year: '', description: '' });
+  };
+
+  return (
+    <div>
+      <AnimatePresence>
+        {data.certifications.map((cert) => (
+          <motion.div 
+            key={cert.id} 
+            variants={listVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="glass" 
+            style={{ padding: '2rem', borderRadius: 'var(--radius-lg)', position: 'relative' }}
+          >
+            <button onClick={() => removeItem('certifications', cert.id)} style={{ position: 'absolute', right: '1.5rem', top: '1.5rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = 'var(--accent-tertiary)'} onMouseOut={e => e.currentTarget.style.color = 'var(--text-muted)'}>
+              <Trash2 size={20} />
+            </button>
+            <div className="grid-cols-2">
+              <div className="input-group">
+                <label className="input-label">Award / Certification Title</label>
+                <input className="input-field" value={cert.title} onChange={e => updateItem('certifications', cert.id, 'title', e.target.value)} placeholder="e.g. AWS Certified Developer" />
+              </div>
+              <div className="input-group">
+                <label className="input-label">Issuer / Organization</label>
+                <input className="input-field" value={cert.issuer} onChange={e => updateItem('certifications', cert.id, 'issuer', e.target.value)} placeholder="e.g. Amazon Web Services" />
+              </div>
+            </div>
+            <div className="input-group" style={{ width: 'calc(50% - 1rem)' }}>
+              <label className="input-label">Year / Date</label>
+              <input className="input-field" value={cert.year} onChange={e => updateItem('certifications', cert.id, 'year', e.target.value)} placeholder="e.g. 2024" />
+            </div>
+            <div className="input-group">
+              <label className="input-label">Short Description (Optional)</label>
+              <div style={{ position: 'relative' }}>
+                <textarea 
+                  className="input-field" 
+                  value={cert.description} 
+                  onChange={e => updateItem('certifications', cert.id, 'description', e.target.value)} 
+                  placeholder="e.g. Secured 1st place among 500+ participants by building an AI-powered app."
+                />
+                <AISuggestButton 
+                  field="general" 
+                  value={cert.description} 
+                  onSuggest={(improved) => updateItem('certifications', cert.id, 'description', improved)} 
+                />
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+      <button className="btn btn-secondary" onClick={handleAdd} style={{ width: '100%', borderStyle: 'dashed' }}><Plus size={18} /> Add Certification or Award</button>
     </div>
   );
 }

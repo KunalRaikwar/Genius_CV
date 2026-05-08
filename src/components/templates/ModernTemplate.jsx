@@ -78,23 +78,42 @@ export default function ModernTemplate({ data }) {
         )}
       </div>
 
-      {/* Projects */}
-      {projects.length > 0 && (
-        <div>
-          <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '15px' }}>Projects</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {projects.map(proj => (
-              <div key={proj.id}>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px' }}>
-                  <h4 style={{ fontSize: '1rem', color: '#111827', margin: 0 }}>{proj.title}</h4>
-                  {proj.link && <a href={proj.link} style={{ fontSize: '0.75rem', color: '#2563EB', textDecoration: 'none' }}>{proj.link}</a>}
+        {/* Projects */}
+        {projects.length > 0 && (
+          <div>
+            <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Projects</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {projects.map(proj => (
+                <div key={proj.id}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <h4 style={{ fontSize: '0.875rem', color: '#111827', margin: 0 }}>{proj.title}</h4>
+                    {proj.link && <a href={proj.link.startsWith('http') ? proj.link : `https://${proj.link}`} style={{ fontSize: '0.75rem', color: '#2563EB', textDecoration: 'none' }}>View Project</a>}
+                  </div>
+                  <p style={{ fontSize: '0.875rem', color: '#374151', margin: '5px 0 0 0', whiteSpace: 'pre-line' }}>{proj.description}</p>
                 </div>
-                <p style={{ fontSize: '0.875rem', color: '#374151', marginTop: '5px', whiteSpace: 'pre-line' }}>{proj.description}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Certifications & Awards */}
+        {data.certifications && data.certifications.length > 0 && (
+          <div>
+            <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Awards & Certifications</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {data.certifications.map(cert => (
+                <div key={cert.id}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                    <h4 style={{ fontSize: '0.875rem', color: '#111827', margin: 0 }}>{cert.title}</h4>
+                    <span style={{ fontSize: '0.875rem', color: '#6B7280', fontWeight: 500 }}>{cert.year}</span>
+                  </div>
+                  <div style={{ fontSize: '0.875rem', color: '#4B5563' }}>{cert.issuer}</div>
+                  {cert.description && <p style={{ fontSize: '0.875rem', color: '#374151', margin: '2px 0 0 0', fontStyle: 'italic' }}>{cert.description}</p>}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
     </div>
   );
 }

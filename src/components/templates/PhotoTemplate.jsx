@@ -102,13 +102,32 @@ export default function PhotoTemplate({ data }) {
 
         {/* Skills */}
         {skills.length > 0 && (
-          <div>
+          <div style={{ marginBottom: '30px' }}>
             <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Skills & Expertise</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
               {skills.map((skill, index) => (
                 <span key={index} style={{ background: '#F1F5F9', color: '#334155', padding: '4px 10px', borderRadius: '4px', fontSize: '0.85rem', fontWeight: 500, border: '1px solid #E2E8F0' }}>
                   {skill.name}
                 </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Certifications & Awards */}
+        {data.certifications && data.certifications.length > 0 && (
+          <div>
+            <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Awards & Certifications</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              {data.certifications.map(cert => (
+                <div key={cert.id}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2px' }}>
+                    <h4 style={{ fontSize: '1.1rem', margin: 0 }}>{cert.title}</h4>
+                    <span style={{ fontSize: '0.85rem', color: '#2563EB', fontWeight: 500 }}>{cert.year}</span>
+                  </div>
+                  <div style={{ fontSize: '0.9rem', color: '#64748B', fontWeight: 500, marginBottom: cert.description ? '8px' : '0' }}>{cert.issuer}</div>
+                  {cert.description && <p style={{ fontSize: '0.875rem', color: '#475569', margin: 0, lineHeight: 1.5, fontStyle: 'italic' }}>{cert.description}</p>}
+                </div>
               ))}
             </div>
           </div>
