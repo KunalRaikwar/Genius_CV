@@ -18,6 +18,13 @@ export const loadRazorpay = () => {
 };
 
 export const handlePayment = async (plan) => {
+  const success = await loadRazorpay();
+  
+  if (!success) {
+    alert('Razorpay SDK failed to load. Are you online?');
+    return;
+  }
+
   const amount = plan.price.replace('₹', '');
   
   if (amount === '0') {
@@ -53,3 +60,4 @@ export const handlePayment = async (plan) => {
   const rzp1 = new window.Razorpay(options);
   rzp1.open();
 };
+
