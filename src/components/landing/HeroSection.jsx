@@ -118,7 +118,7 @@ function ResumeCard() {
 
 export default function HeroSection() {
   return (
-    <section style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', paddingTop: '6rem', paddingBottom: '4rem', position: 'relative', overflow: 'hidden' }}>
+    <section style={{ minHeight: '90vh', display: 'flex', alignItems: 'center', paddingTop: '1rem', paddingBottom: '4rem', position: 'relative', overflow: 'hidden' }}>
       <div style={{ position: 'absolute', top: '10%', left: '15%', width: '400px', height: '400px', background: 'rgba(124,58,237,0.12)', borderRadius: '50%', filter: 'blur(100px)', zIndex: 0 }} />
       <div style={{ position: 'absolute', bottom: '10%', right: '10%', width: '350px', height: '350px', background: 'rgba(6,182,212,0.08)', borderRadius: '50%', filter: 'blur(80px)', zIndex: 0 }} />
 

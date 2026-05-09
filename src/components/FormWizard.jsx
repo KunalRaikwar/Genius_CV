@@ -8,6 +8,7 @@ export default function FormWizard() {
   const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
   const steps = ['Personal', 'Education', 'Experience', 'Skills', 'Projects', 'Awards'];
+  const { saveResume, isSaving } = useResume();
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -83,9 +84,18 @@ export default function FormWizard() {
             <ArrowLeft size={18} /> Back
           </button>
           
-          <button className="btn btn-primary" onClick={handleNext} style={{ padding: '1rem 2rem' }}>
-            {currentStep === steps.length - 1 ? 'Generate Profile' : 'Next Step'} <ArrowRight size={18} />
-          </button>
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <button 
+              className="btn btn-secondary" 
+              onClick={() => saveResume()}
+              disabled={isSaving}
+            >
+              {isSaving ? 'Saving...' : 'Save Progress'}
+            </button>
+            <button className="btn btn-primary" onClick={handleNext} style={{ padding: '1rem 2rem' }}>
+              {currentStep === steps.length - 1 ? 'Generate Profile' : 'Next Step'} <ArrowRight size={18} />
+            </button>
+          </div>
         </div>
       </motion.div>
     </div>

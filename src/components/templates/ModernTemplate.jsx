@@ -28,7 +28,7 @@ export default function ModernTemplate({ data }) {
       )}
 
       {/* Experience */}
-      {experience.length > 0 && (
+      {experience.length > 0 && experience.some(e => e.role || e.company || e.description) && (
         <div>
           <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '15px' }}>Experience</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -49,7 +49,7 @@ export default function ModernTemplate({ data }) {
       {/* Education & Skills Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
         {/* Education */}
-        {education.length > 0 && (
+        {education.length > 0 && education.some(e => e.school || e.degree) && (
           <div>
             <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Education</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -64,7 +64,7 @@ export default function ModernTemplate({ data }) {
         )}
 
         {/* Skills */}
-        {skills.length > 0 && (
+        {skills.length > 0 && skills.some(s => s.name) && (
           <div>
             <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Skills</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
@@ -79,7 +79,7 @@ export default function ModernTemplate({ data }) {
       </div>
 
         {/* Projects */}
-        {projects.length > 0 && (
+        {projects.length > 0 && projects.some(p => p.title || p.description) && (
           <div>
             <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Projects</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -97,7 +97,7 @@ export default function ModernTemplate({ data }) {
         )}
 
         {/* Certifications & Awards */}
-        {data.certifications && data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && data.certifications.some(c => c.title || c.issuer) && (
           <div>
             <h3 style={{ fontSize: '1.125rem', color: '#111827', borderBottom: '1px solid #E5E7EB', paddingBottom: '5px', marginBottom: '10px' }}>Awards & Certifications</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

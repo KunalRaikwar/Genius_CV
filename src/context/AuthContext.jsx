@@ -1,9 +1,9 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import { supabase } from '../utils/supabaseClient';
 
 // Legal Email Regex for validation
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
 
 const AuthContext = createContext(null);
 
@@ -14,23 +14,15 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const sendWelcomeEmail = (userName, userEmail) => {
-    // Template for the email as requested by user
     const templateParams = {
       to_name: userName,
       to_email: userEmail,
       subject: 'Welcome Back! You’re Logged In',
-      message: `Glad to see you again! You have successfully logged into your dashboard.
-
-Ready to build your next professional resume? Our new templates are waiting for you. Just head over to the "Templates" section and start creating. If you need any help, our documentation and support are just a click away.
-
-Happy Creating,
-
-GeniusCV Support`
+      message: `Glad to see you again! You have successfully logged into your dashboard.\n\nReady to build your next professional resume? Our new templates are waiting for you. Just head over to the "Templates" section and start creating. If you need any help, our documentation and support are just a click away.\n\nHappy Creating,\n\nGeniusCV Support`
     };
 
     console.log('Sending Welcome Email to:', userEmail);
     
-    // Check if EmailJS keys are provided
     const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
     const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
@@ -45,43 +37,115 @@ GeniusCV Support`
   };
 
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem('geniuscv_user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const initAuth = async () => {
+      if (supabase) {
+        // Supabase Auth
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          setUser({
+            id: session.user.id,
+            name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+            email: session.user.email
+          });
+        }
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+          if (session) {
+            setUser({
+              id: session.user.id,
+              name: session.user.user_metadata?.full_name || session.user.email.split('@')[0],
+              email: session.user.email
+            });
+          } else {
+            setUser(null);
+          }
+        });
+
+        setLoading(false);
+        return () => subscription.unsubscribe();
+      } else {
+        // Fallback to localStorage
+        const storedUser = localStorage.getItem('geniuscv_user');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+        setLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
 
 
-  const login = (email, password) => {
+  const login = async (email, password) => {
     if (!EMAIL_REGEX.test(email)) {
       return { success: false, error: 'Please enter a valid email address.' };
     }
 
+    if (supabase) {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) return { success: false, error: error.message };
+      
+      const sessionUser = {
+        id: data.user.id,
+        name: data.user.user_metadata?.full_name || email.split('@')[0],
+        email: data.user.email
+      };
+      setUser(sessionUser);
+      sendWelcomeEmail(sessionUser.name, sessionUser.email);
+      return { success: true };
+    }
+
+    // Fallback to localStorage
     const users = JSON.parse(localStorage.getItem('geniuscv_users') || '[]');
     const foundUser = users.find(u => u.email === email && u.password === password);
     
     if (foundUser) {
-      // Exclude password from session
       const sessionUser = { id: foundUser.id, name: foundUser.name, email: foundUser.email };
       localStorage.setItem('geniuscv_user', JSON.stringify(sessionUser));
       setUser(sessionUser);
-      
-      // Send welcome email on login
       sendWelcomeEmail(sessionUser.name, sessionUser.email);
-      
       return { success: true };
     }
     return { success: false, error: 'Invalid email or password' };
   };
 
 
-  const signup = (name, email, password) => {
+  const signup = async (name, email, password) => {
     if (!EMAIL_REGEX.test(email)) {
       return { success: false, error: 'Please enter a valid email address.' };
     }
 
+    if (supabase) {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name
+          }
+        }
+      });
+      if (error) return { success: false, error: error.message };
+      
+      // Auto login after signup if email confirmation is off
+      if (data.user && data.session) {
+        const sessionUser = {
+          id: data.user.id,
+          name: name,
+          email: data.user.email
+        };
+        setUser(sessionUser);
+        sendWelcomeEmail(name, email);
+      } else if (data.user) {
+        // If email confirmation is enabled, session will be null
+        return { success: true, message: 'Please check your email to verify your account.' };
+      }
+      return { success: true };
+    }
+
+    // Fallback to localStorage
     const users = JSON.parse(localStorage.getItem('geniuscv_users') || '[]');
     if (users.find(u => u.email === email)) {
       return { success: false, error: 'Email already exists' };
@@ -94,22 +158,30 @@ GeniusCV Support`
     const sessionUser = { id: newUser.id, name: newUser.name, email: newUser.email };
     localStorage.setItem('geniuscv_user', JSON.stringify(sessionUser));
     setUser(sessionUser);
-
-    // Send welcome email on signup
     sendWelcomeEmail(sessionUser.name, sessionUser.email);
-
     return { success: true };
   };
 
 
-  const updateUser = (name, email) => {
+  const updateUser = async (name, email) => {
     if (!user) return { success: false, error: 'Not logged in' };
     
+    if (supabase) {
+      const { error } = await supabase.auth.updateUser({
+        email: email,
+        data: { full_name: name }
+      });
+      if (error) return { success: false, error: error.message };
+      
+      setUser(prev => ({ ...prev, name, email }));
+      return { success: true };
+    }
+
+    // Fallback to localStorage
     const users = JSON.parse(localStorage.getItem('geniuscv_users') || '[]');
     const userIndex = users.findIndex(u => u.id === user.id);
     
     if (userIndex !== -1) {
-      // Check if new email is already taken by someone else
       if (email !== user.email && users.find(u => u.email === email && u.id !== user.id)) {
         return { success: false, error: 'Email already in use' };
       }
@@ -126,13 +198,42 @@ GeniusCV Support`
     return { success: false, error: 'User not found' };
   };
 
-  const logout = () => {
+  const logout = async () => {
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
     localStorage.removeItem('geniuscv_user');
     setUser(null);
   };
 
+  const deleteAccount = async () => {
+    if (!user) return { success: false, error: 'Not logged in' };
+
+    if (supabase) {
+      // Call the RPC function to delete the user from auth.users
+      const { error } = await supabase.rpc('delete_user');
+      if (error) {
+        return { success: false, error: error.message || 'Failed to delete account from cloud.' };
+      }
+      
+      // If successful, log out
+      await logout();
+      return { success: true };
+    }
+
+    // Fallback to localStorage deletion
+    const users = JSON.parse(localStorage.getItem('geniuscv_users') || '[]');
+    const updatedUsers = users.filter(u => u.id !== user.id);
+    localStorage.setItem('geniuscv_users', JSON.stringify(updatedUsers));
+    
+    // Log out
+    localStorage.removeItem('geniuscv_user');
+    setUser(null);
+    return { success: true };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, logout, updateUser, deleteAccount }}>
       {!loading && children}
     </AuthContext.Provider>
   );

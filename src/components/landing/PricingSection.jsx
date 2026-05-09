@@ -9,15 +9,15 @@ const fadeUp = {
 
 const plans = [
   {
-    name: 'Free', price: '$0', period: 'forever', popular: false,
+    name: 'Free', price: '₹0', period: 'forever', popular: false,
     features: ['1 Resume', '3 Templates', 'PDF Download', 'Basic ATS Check', 'AI Summary (3/day)'],
   },
   {
-    name: 'Pro', price: '$9', period: '/month', popular: true,
+    name: 'Pro', price: '₹79', period: '/month', popular: true,
     features: ['Unlimited Resumes', 'All Templates', 'PDF Download', 'Full ATS Checker', 'Unlimited AI', 'Priority Support', 'Resume Analytics'],
   },
   {
-    name: 'Premium', price: '$19', period: '/month', popular: false,
+    name: 'Premium', price: '₹149', period: '/month', popular: false,
     features: ['Everything in Pro', 'Portfolio Generator', 'Custom Domain', 'Team Collaboration', 'API Access', 'White Label', 'Dedicated Support'],
   },
 ];
@@ -43,7 +43,7 @@ export default function PricingSection() {
                 ))}
               </ul>
               <Link to="/signup" className={`btn ${p.popular ? 'btn-primary' : 'btn-secondary'}`} style={{ width: '100%' }}>
-                {p.price === '$0' ? 'Get Started Free' : 'Start Free Trial'}
+                {p.price === '₹0' ? 'Get Started Free' : 'Start Free Trial'}
               </Link>
             </motion.div>
           ))}

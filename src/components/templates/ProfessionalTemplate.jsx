@@ -38,7 +38,7 @@ export default function ProfessionalTemplate({ data }) {
       )}
 
       {/* Experience */}
-      {experience.length > 0 && (
+      {experience.length > 0 && experience.some(e => e.role || e.company || e.description) && (
         <section>
           <h3 style={{ fontSize: '1rem', color: '#0f172a', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Core Experience</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -57,7 +57,7 @@ export default function ProfessionalTemplate({ data }) {
       )}
 
       {/* Skills */}
-      {skills.length > 0 && (
+      {skills.length > 0 && skills.some(s => s.name) && (
         <section>
           <h3 style={{ fontSize: '1rem', color: '#0f172a', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Technical Expertise</h3>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -71,7 +71,7 @@ export default function ProfessionalTemplate({ data }) {
       )}
 
       {/* Education */}
-      {education.length > 0 && (
+      {education.length > 0 && education.some(e => e.school || e.degree) && (
         <section>
           <h3 style={{ fontSize: '1rem', color: '#0f172a', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Academic Background</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -89,7 +89,7 @@ export default function ProfessionalTemplate({ data }) {
       )}
 
       {/* Certifications & Awards */}
-      {data.certifications && data.certifications.length > 0 && (
+      {data.certifications && data.certifications.length > 0 && data.certifications.some(c => c.title || c.issuer) && (
         <section>
           <h3 style={{ fontSize: '1rem', color: '#0f172a', borderBottom: '1px solid #cbd5e1', paddingBottom: '3px', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Honors & Certifications</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

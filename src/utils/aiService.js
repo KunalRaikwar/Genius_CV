@@ -70,3 +70,66 @@ Here is the text to optimize: "${text}"`;
     throw error;
   }
 };
+
+export const analyzeATS = async (resumeText) => {
+  if (!GEMINI_API_KEY) {
+    throw new Error("Gemini API key is missing. Please check your .env file.");
+  }
+
+  if (!resumeText || resumeText.trim().length === 0) {
+    throw new Error("Please provide resume text to analyze.");
+  }
+
+  const prompt = `You are an expert Applicant Tracking System (ATS) and professional resume reviewer. 
+Analyze the following resume text and provide an ATS evaluation.
+Return exactly and ONLY a valid JSON string with the following structure, no markdown formatting, no code blocks, no other text:
+{
+  "score": (a number between 0 and 100 representing ATS compatibility),
+  "missingKeywords": (an array of 5-8 string keywords or skills that are commonly expected but missing or could be added for better ATS ranking),
+  "suggestions": (an array of 3-5 string actionable tips to improve the resume impact and formatting for ATS)
+}
+
+Resume Text:
+"${resumeText}"`;
+
+  try {
+    const response = await fetch(`${API_URL}?key=${GEMINI_API_KEY}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: prompt }]
+        }]
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error?.message || 'Failed to communicate with AI service');
+    }
+
+    const data = await response.json();
+    
+    if (data.candidates && data.candidates[0].content.parts[0].text) {
+      let resultText = data.candidates[0].content.parts[0].text.trim();
+      // Remove any markdown code block wrappers if Gemini still includes them
+      resultText = resultText.replace(/^```json/i, '').replace(/^```/, '').replace(/```$/, '').trim();
+      
+      try {
+        const parsedData = JSON.parse(resultText);
+        return parsedData;
+      } catch (parseError) {
+        console.error("Failed to parse ATS response JSON:", resultText);
+        throw new Error("Failed to parse AI response into JSON format.");
+      }
+    } else {
+      throw new Error("Unexpected response format from AI service");
+    }
+
+  } catch (error) {
+    console.error('ATS Analysis Error:', error);
+    throw error;
+  }
+};

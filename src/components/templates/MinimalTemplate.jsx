@@ -33,7 +33,7 @@ export default function MinimalTemplate({ data }) {
       )}
 
       {/* Experience */}
-      {experience.length > 0 && (
+      {experience.length > 0 && experience.some(e => e.role || e.company || e.description) && (
         <div>
           <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Experience</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -51,7 +51,7 @@ export default function MinimalTemplate({ data }) {
       )}
 
       {/* Projects */}
-      {projects.length > 0 && (
+      {projects.length > 0 && projects.some(p => p.title || p.description) && (
         <div>
           <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Projects</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -69,7 +69,7 @@ export default function MinimalTemplate({ data }) {
       )}
 
       {/* Education */}
-      {education.length > 0 && (
+      {education.length > 0 && education.some(e => e.school || e.degree) && (
         <div>
           <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Education</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -86,7 +86,7 @@ export default function MinimalTemplate({ data }) {
       )}
 
       {/* Skills */}
-      {skills.length > 0 && (
+      {skills.length > 0 && skills.some(s => s.name) && (
         <div>
           <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Skills</h3>
           <p style={{ fontSize: '0.9rem', color: '#333', lineHeight: '1.5' }}>
@@ -96,7 +96,7 @@ export default function MinimalTemplate({ data }) {
       )}
 
       {/* Certifications & Awards */}
-      {data.certifications && data.certifications.length > 0 && (
+      {data.certifications && data.certifications.length > 0 && data.certifications.some(c => c.title || c.issuer) && (
         <div>
           <h3 style={{ fontSize: '1rem', color: '#000', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #ccc', paddingBottom: '5px', marginBottom: '15px' }}>Awards & Certifications</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>

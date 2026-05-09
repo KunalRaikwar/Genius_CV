@@ -39,7 +39,7 @@ export default function PhotoTemplate({ data }) {
         </div>
 
         {/* Education */}
-        {education.length > 0 && (
+        {education.length > 0 && education.some(e => e.school || e.degree) && (
           <div>
             <h3 style={{ fontSize: '1.1rem', borderBottom: '1px solid #334155', paddingBottom: '5px', marginBottom: '15px', color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '1px' }}>Education</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -67,7 +67,7 @@ export default function PhotoTemplate({ data }) {
         )}
 
         {/* Experience */}
-        {experience.length > 0 && (
+        {experience.length > 0 && experience.some(e => e.role || e.company || e.description) && (
           <div style={{ marginBottom: '30px' }}>
             <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Experience</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -86,7 +86,7 @@ export default function PhotoTemplate({ data }) {
         )}
 
         {/* Projects */}
-        {projects.length > 0 && (
+        {projects.length > 0 && projects.some(p => p.title || p.description) && (
           <div style={{ marginBottom: '30px' }}>
             <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Projects</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -101,7 +101,7 @@ export default function PhotoTemplate({ data }) {
         )}
 
         {/* Skills */}
-        {skills.length > 0 && (
+        {skills.length > 0 && skills.some(s => s.name) && (
           <div style={{ marginBottom: '30px' }}>
             <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Skills & Expertise</h3>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -115,7 +115,7 @@ export default function PhotoTemplate({ data }) {
         )}
 
         {/* Certifications & Awards */}
-        {data.certifications && data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && data.certifications.some(c => c.title || c.issuer) && (
           <div>
             <h3 style={{ fontSize: '1.25rem', color: '#2563EB', borderBottom: '2px solid #E2E8F0', paddingBottom: '5px', marginBottom: '15px', display: 'inline-block' }}>Awards & Certifications</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>

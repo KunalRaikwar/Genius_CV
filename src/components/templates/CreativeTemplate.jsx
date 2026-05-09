@@ -49,7 +49,7 @@ export default function CreativeTemplate({ data }) {
           </div>
         </section>
 
-        {skills.length > 0 && (
+        {skills.length > 0 && skills.some(s => s.name) && (
           <section>
             <h3 style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '5px', marginBottom: '15px' }}>Expertise</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -60,7 +60,7 @@ export default function CreativeTemplate({ data }) {
           </section>
         )}
 
-        {education.length > 0 && (
+        {education.length > 0 && education.some(e => e.school || e.degree) && (
           <section>
             <h3 style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: '5px', marginBottom: '15px' }}>Education</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -90,7 +90,7 @@ export default function CreativeTemplate({ data }) {
           </section>
         )}
 
-        {experience.length > 0 && (
+        {experience.length > 0 && experience.some(e => e.role || e.company || e.description) && (
           <section>
             <h3 style={{ fontSize: '1rem', color: '#111827', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #f3f4f6', paddingBottom: '5px', marginBottom: '15px' }}>Experience</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -108,7 +108,7 @@ export default function CreativeTemplate({ data }) {
           </section>
         )}
 
-        {projects.length > 0 && (
+        {projects.length > 0 && projects.some(p => p.title || p.description) && (
           <section>
             <h3 style={{ fontSize: '1rem', color: '#111827', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #f3f4f6', paddingBottom: '5px', marginBottom: '15px' }}>Projects</h3>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
@@ -122,7 +122,7 @@ export default function CreativeTemplate({ data }) {
           </section>
         )}
 
-        {data.certifications && data.certifications.length > 0 && (
+        {data.certifications && data.certifications.length > 0 && data.certifications.some(c => c.title || c.issuer) && (
           <section>
             <h3 style={{ fontSize: '1rem', color: '#111827', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '2px solid #f3f4f6', paddingBottom: '5px', marginBottom: '15px' }}>Awards & Certifications</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>

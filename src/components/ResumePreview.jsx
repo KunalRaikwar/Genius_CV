@@ -6,11 +6,11 @@ import PhotoTemplate from './templates/PhotoTemplate';
 import CreativeTemplate from './templates/CreativeTemplate';
 import ProfessionalTemplate from './templates/ProfessionalTemplate';
 import html2pdf from 'html2pdf.js';
-import { Download, LayoutTemplate, Edit, Palette, Briefcase, Sparkles, Zap, User } from 'lucide-react';
+import { Download, LayoutTemplate, Edit, Palette, Briefcase, Sparkles, Zap, User, Cloud } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function ResumePreview() {
-  const { data } = useResume();
+  const { data, saveResume, isSaving } = useResume();
   const resumeRef = useRef(null);
   const [template, setTemplate] = useState('modern');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -53,8 +53,15 @@ export default function ResumePreview() {
           </h1>
           <p className="text-secondary">Select a template and download your professional PDF resume.</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
           <Link to="/build" className="btn btn-secondary"><Edit size={18} /> Edit Details</Link>
+          <button 
+            className="btn btn-secondary" 
+            onClick={saveResume}
+            disabled={isSaving}
+          >
+            <Cloud size={18} /> {isSaving ? 'Saving...' : 'Save to Cloud'}
+          </button>
           <button 
             className="btn btn-primary" 
             onClick={handleDownload}

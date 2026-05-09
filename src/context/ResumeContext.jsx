@@ -1,4 +1,6 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../utils/supabaseClient';
+import { useAuth } from './AuthContext';
 
 const defaultState = {
   personal: {
@@ -26,6 +28,60 @@ export const useResume = () => useContext(ResumeContext);
 
 export const ResumeProvider = ({ children }) => {
   const [data, setData] = useState(defaultState);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { user } = useAuth();
+
+  // Load resume data from Supabase when user logs in
+  useEffect(() => {
+    const loadResume = async () => {
+      if (user && supabase) {
+        try {
+          const { data: resumeData, error } = await supabase
+            .from('resumes')
+            .select('data')
+            .eq('user_id', user.id)
+            .single();
+
+          if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
+            console.error('Error loading resume from Supabase:', error.message);
+          } else if (resumeData) {
+            setData(resumeData.data);
+          }
+        } catch (error) {
+          console.error('Error fetching resume:', error);
+        }
+      }
+      setIsLoaded(true);
+    };
+
+    loadResume();
+  }, [user]);
+
+  // Function to manually save to Supabase
+  const saveResume = async () => {
+    if (!user || !supabase) return;
+    
+    setIsSaving(true);
+    try {
+      const { error } = await supabase
+        .from('resumes')
+        .upsert({
+          user_id: user.id,
+          data: data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'user_id' });
+
+      if (error) {
+        console.error('Error saving resume to Supabase:', error.message);
+      } else {
+        console.log('Resume saved successfully!');
+      }
+    } catch (error) {
+      console.error('Unexpected error saving resume:', error);
+    }
+    setIsSaving(false);
+  };
 
   const updatePersonal = (field, value) => {
     setData(prev => ({
@@ -81,7 +137,10 @@ export const ResumeProvider = ({ children }) => {
       addItem, 
       updateItem, 
       removeItem,
-      improveWithAI 
+      improveWithAI,
+      saveResume,
+      isSaving,
+      isLoaded
     }}>
       {children}
     </ResumeContext.Provider>

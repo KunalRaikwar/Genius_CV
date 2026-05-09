@@ -88,11 +88,11 @@ export function Login() {
     // Small delay for UX feel
     await new Promise(r => setTimeout(r, 600));
     
-    const res = login(email, password);
+    const res = await login(email, password);
     if (res.success) {
       navigate('/profile');
     } else {
-      setError(res.error);
+      setError(res.error || 'Failed to login.');
     }
     setIsLoading(false);
   };
@@ -263,13 +263,13 @@ export function Signup() {
 
     if (enteredOtp === generatedOtp) {
       // OTP verified — create account
-      const res = signup(name, email, password);
+      const res = await signup(name, email, password);
       setIsLoading(false);
       if (res.success) {
         setStep('success');
         setTimeout(() => navigate('/profile'), 2000);
       } else {
-        setOtpError(res.error);
+        setOtpError(res.error || 'Failed to create account.');
       }
     } else {
       setIsLoading(false);
@@ -380,7 +380,7 @@ export function Signup() {
                 )}
               </AnimatePresence>
 
-              <div className="countdown">
+              <div className="countdown" style={{ marginBottom: '1.5rem' }}>
                 {canResend ? (
                   <button onClick={handleResendOtp} className="btn btn-ghost" style={{ fontSize: '0.85rem', margin: '0 auto', color: 'var(--accent-primary)' }}>
                     Resend Code
@@ -389,10 +389,6 @@ export function Signup() {
                   <p>Resend code in <span>{countdown}s</span></p>
                 )}
               </div>
-
-              <p className="text-secondary" style={{ textAlign: 'center', fontSize: '0.75rem', marginTop: '1.5rem', lineHeight: 1.5 }}>
-                💡 <strong>Tip:</strong> Check your browser console (F12) for the OTP if EmailJS is not configured.
-              </p>
             </motion.div>
           )}
 
