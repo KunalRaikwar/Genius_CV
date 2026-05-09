@@ -120,9 +120,6 @@ const AISuggestButton = ({ field, value, onSuggest }) => {
       style={{ 
         padding: '0.5rem 1rem', 
         fontSize: '0.875rem', 
-        position: 'absolute', 
-        right: '0.75rem', 
-        bottom: '0.75rem',
         borderRadius: 'var(--radius-sm)'
       }}
     >
@@ -276,14 +273,14 @@ function PersonalStep() {
       </div>
       <div className="input-group">
         <label className="input-label">Professional Summary</label>
-        <div style={{ position: 'relative' }}>
-          <textarea 
-            className="input-field" 
-            style={{ paddingBottom: '3.5rem', minHeight: '150px' }}
-            value={personal.summary} 
-            onChange={e => updatePersonal('summary', e.target.value)} 
-            placeholder="Write a compelling overview of your career, key skills, and what you bring to the table..."
-          />
+        <textarea 
+          className="input-field" 
+          style={{ minHeight: '120px' }}
+          value={personal.summary} 
+          onChange={e => updatePersonal('summary', e.target.value)} 
+          placeholder="Write a compelling overview of your career, key skills, and what you bring to the table..."
+        />
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '0.5rem' }}>
           <AISuggestButton 
             field="summary" 
             value={personal.summary} 

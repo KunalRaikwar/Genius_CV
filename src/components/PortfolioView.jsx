@@ -197,7 +197,12 @@ export default function PortfolioView() {
         )}
 
         <footer style={{ marginTop: '4rem', paddingTop: '3rem', borderTop: '1px solid var(--border-color)', textAlign: 'center', color: 'var(--text-muted)' }}>
-          <p>© {new Date().getFullYear()} Designed & Developed by Kunal Raikwar. All rights reserved.</p>
+          <p>
+            © {new Date().getFullYear()} {personal.fullName || 'Portfolio'}. All rights reserved.
+            <span style={{ opacity: 0.6, marginLeft: '1rem', paddingLeft: '1rem', borderLeft: '1px solid rgba(255,255,255,0.2)' }}>
+              Powered by Genius CV
+            </span>
+          </p>
         </footer>
       </div>
     </div>

@@ -20,16 +20,25 @@ function App() {
   const { user } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+  const isLanding = location.pathname === '/';
 
   // Close menu on navigation
   const handleNavClick = () => setMenuOpen(false);
+
+  const scrollToSection = (id) => {
+    handleNavClick();
+    if (isLanding) {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
       <nav className="navbar glass flex-between" style={{ padding: '0 2rem' }}>
         <Link to="/" className="flex-center" style={{ gap: '0.5rem' }} onClick={handleNavClick}>
           <Sparkles className="text-gradient" size={24} />
-          <span className="heading-xl" style={{ fontSize: '1.25rem', margin: 0 }}>GeniusCV</span>
+          <span className="heading-xl" style={{ fontSize: '1.25rem', margin: 0 }}>Genius CV</span>
         </Link>
 
         {/* Mobile Menu Button */}
@@ -42,17 +51,25 @@ function App() {
 
         {/* Nav Links */}
         <div className={`nav-links ${menuOpen ? 'open' : ''}`}>
+          {isLanding && (
+            <>
+              <button onClick={() => scrollToSection('templates')} className="btn btn-ghost btn-sm">Templates</button>
+              <button onClick={() => scrollToSection('features')} className="btn btn-ghost btn-sm">Features</button>
+              <button onClick={() => scrollToSection('pricing')} className="btn btn-ghost btn-sm">Pricing</button>
+              <button onClick={() => scrollToSection('reviews')} className="btn btn-ghost btn-sm">Reviews</button>
+            </>
+          )}
           {user ? (
             <>
-              <Link to="/resume" className="btn btn-ghost" onClick={handleNavClick}><FileText size={18} /> Resume</Link>
-              <Link to="/portfolio" className="btn btn-ghost" onClick={handleNavClick}><Globe size={18} /> Portfolio</Link>
-              <Link to="/profile" className="btn btn-secondary" onClick={handleNavClick}><User size={18} /> Profile</Link>
-              <Link to="/build" className="btn btn-primary" onClick={handleNavClick}>Build Now</Link>
+              <Link to="/resume" className="btn btn-ghost btn-sm" onClick={handleNavClick}><FileText size={18} /> Resume</Link>
+              <Link to="/portfolio" className="btn btn-ghost btn-sm" onClick={handleNavClick}><Globe size={18} /> Portfolio</Link>
+              <Link to="/profile" className="btn btn-secondary btn-sm" onClick={handleNavClick}><User size={18} /> Profile</Link>
+              <Link to="/build" className="btn btn-primary btn-sm" onClick={handleNavClick}>Build Now</Link>
             </>
           ) : (
             <>
-              <Link to="/login" className="btn btn-ghost" onClick={handleNavClick}><LogIn size={18} /> Log In</Link>
-              <Link to="/signup" className="btn btn-primary" onClick={handleNavClick}>Sign Up</Link>
+              <Link to="/login" className="btn btn-ghost btn-sm" onClick={handleNavClick}><LogIn size={18} /> Log In</Link>
+              <Link to="/signup" className="btn btn-primary btn-sm" onClick={handleNavClick}>Sign Up</Link>
             </>
           )}
         </div>
