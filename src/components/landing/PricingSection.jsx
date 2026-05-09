@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle } from 'lucide-react';
+import { handlePayment } from '../../utils/paymentService';
+import { useAuth } from '../../context/AuthContext';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
@@ -23,6 +25,24 @@ const plans = [
 ];
 
 export default function PricingSection() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const onPlanAction = (p) => {
+    if (p.price === '₹0') {
+      navigate('/signup');
+      return;
+    }
+
+    if (!user) {
+      alert('Please login/signup first to upgrade your plan.');
+      navigate('/signup');
+      return;
+    }
+
+    handlePayment(p);
+  };
+
   return (
     <section id="pricing" className="landing-section">
       <div className="container">
@@ -42,9 +62,13 @@ export default function PricingSection() {
                   <li key={f}><CheckCircle size={16} style={{ color: '#22c55e', flexShrink: 0 }} /> {f}</li>
                 ))}
               </ul>
-              <Link to="/signup" className={`btn ${p.popular ? 'btn-primary' : 'btn-secondary'}`} style={{ width: '100%' }}>
-                {p.price === '₹0' ? 'Get Started Free' : 'Start Free Trial'}
-              </Link>
+              <button 
+                onClick={() => onPlanAction(p)}
+                className={`btn ${p.popular ? 'btn-primary' : 'btn-secondary'}`} 
+                style={{ width: '100%', cursor: 'pointer' }}
+              >
+                {p.price === '₹0' ? 'Get Started Free' : 'Upgrade Now'}
+              </button>
             </motion.div>
           ))}
         </motion.div>
