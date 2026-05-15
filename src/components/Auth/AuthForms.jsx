@@ -190,6 +190,7 @@ export function Signup() {
     if (!name.trim()) return setError('Please enter your full name.');
     if (!email.trim()) return setError('Please enter your email address.');
     if (password.length < 6) return setError('Password must be at least 6 characters.');
+    if (!/(?=.*[a-zA-Z])(?=.*\d)/.test(password)) return setError('Password should contain at least one character of each: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ, 0123456789.');
     if (password !== confirmPassword) return setError('Passwords do not match.');
 
     setIsLoading(true);
@@ -266,8 +267,22 @@ export function Signup() {
       const res = await signup(name, email, password);
       setIsLoading(false);
       if (res.success) {
+        // Set success message if provided (e.g. from Supabase email confirmation)
+        if (res.message) {
+          setSuccessMessage(res.message);
+        } else {
+          setSuccessMessage('Welcome to GeniusCV. Redirecting to your dashboard...');
+        }
         setStep('success');
-        setTimeout(() => navigate('/profile'), 2000);
+        
+        // Delay and then navigate
+        setTimeout(() => {
+          if (res.message) {
+             navigate('/login');
+          } else {
+             navigate('/profile');
+          }
+        }, 3000);
       } else {
         setOtpError(res.error || 'Failed to create account.');
       }
@@ -276,6 +291,9 @@ export function Signup() {
       setOtpError('Invalid verification code. Please try again.');
     }
   };
+
+  // State to hold success message
+  const [successMessage, setSuccessMessage] = useState('');
 
   return (
     <div className="container flex-center" style={{ minHeight: '80vh', position: 'relative', zIndex: 1 }}>
@@ -399,7 +417,7 @@ export function Signup() {
                 <CheckCircle2 size={40} style={{ color: 'var(--accent-primary)' }} />
               </div>
               <h2 className="heading-lg" style={{ fontSize: '1.75rem', marginBottom: '0.5rem' }}>Account Created!</h2>
-              <p className="text-secondary">Welcome to GeniusCV. Redirecting to your dashboard...</p>
+              <p className="text-secondary">{successMessage}</p>
               <div style={{ marginTop: '1.5rem' }}>
                 <Loader2 size={20} style={{ animation: 'spin 1s linear infinite', color: 'var(--accent-primary)' }} />
               </div>
